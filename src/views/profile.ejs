@@ -1,0 +1,14 @@
+<%- include('partials/header') %>
+
+<h1>User Profile</h1>
+<form action="/api/users/profile?_method=PUT" method="POST">
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username" value="<%= user.username %>" required>
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" value="<%= user.email %>" required>
+
+  <button type="submit">Update Profile</button>
+</form>
+
+<%- include('partials/footer') %>

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const deviceSchema = new mongoose.Schema({
+const DeviceSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -10,9 +10,15 @@ const deviceSchema = new mongoose.Schema({
         required: true
     },
     serialNumber: {
+        type: String, // Also chipID
+        required: true,
+        index: true,
+        unique: true
+    },
+    location: {
         type: String,
         required: true,
-        unique: true
+        unique: false
     },
     firmwareVersion: {
         type: String,
@@ -28,3 +34,7 @@ const deviceSchema = new mongoose.Schema({
         ref: 'User'
     }
 });
+
+const Device = mongoose.model("Device", DeviceSchema);
+
+module.exports = Device;

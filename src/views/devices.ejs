@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+
+<h1>Device Management</h1>
+<ul id="device-list">
+  <% devices.forEach(device => { %>
+    <li>
+      <h2><%= device.name %></h2>
+      <p>ID: <%= device.id %></p>
+      <p>Status: <%= device.status %></p>
+      <a href="/api/devices/<%= device.id %>">View Details</a>
+      <form action="/api/devices/<%= device.id %>?_method=DELETE" method="POST">
+        <button type="submit">Remove</button>
+      </form>
+    </li>
+  <% }); %>
+</ul>
+
+<form action="/api/devices" method="POST">
+  <input type="text" name="name" placeholder="Device Name" required>
+  <button type="submit">Add Device</button>
+</form>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,81 @@
+<%- include('partials/header') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - IO-connecT</title>
+    <link rel="stylesheet" href="/stylesheets/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-grid">
+            <div class="dashboard-item devices-overview">
+                <h2>Your Devices</h2>
+                <div class="device-grid">
+                    <% if (typeof devices !== 'undefined' && devices.length > 0) { %>
+                        <% devices.slice(0, 4).forEach(function(device) { %>
+                            <div class="device-card">
+                                <h3><%= device.name %></h3>
+                                <p><strong>Type:</strong> <%= device.type %></p>
+                                <p><strong>Status:</strong> <span class="status <%= device.status.toLowerCase() === 'online' ? 'status-online' : 'status-offline' %>"><%= device.status %></span></p>
+                                <p><strong>Last Connection:</strong> <%= device.lastConnection %></p>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <p>No devices found.</p>
+                    <% } %>
+                </div>
+                <a href="/api/devices" class="view-all-btn">View All Devices</a>
+            </div>
+            
+            <div class="dashboard-item notifications">
+                <h2>Notifications</h2>
+                <ul class="notification-list">
+                    <!-- Add EJS logic for notifications here -->
+                    <li>New device connected</li>
+                    <li>Firmware update available</li>
+                </ul>
+                <a href="#" class="view-all-btn">View All Notifications</a>
+            </div>
+            
+            <div class="dashboard-item alerts">
+                <h2>Alerts</h2>
+                <ul class="alert-list">
+                    <!-- Add EJS logic for alerts here -->
+                    <li class="alert-critical">Critical: Device offline for 24 hours</li>
+                    <li class="alert-warning">Warning: Battery low on Living Room Sensor</li>
+                </ul>
+                <a href="/api/alerts" class="view-all-btn">View All Alerts</a>
+            </div>
+            
+            <div class="dashboard-item quick-actions">
+              <h2>Quick Actions</h2>
+              <div class="quick-actions-grid">
+                  <button onclick="location.href='/user/add-device'" class="action-btn">
+                      <i class="fas fa-plus-circle"></i>
+                      Add Device
+                  </button>
+                  <button onclick="location.href='/api/users/profile'" class="action-btn">
+                      <i class="fas fa-user-edit"></i>
+                      Edit Profile
+                  </button>
+                  <button onclick="location.href='#'" class="action-btn">
+                      <i class="fas fa-cog"></i>
+                      Settings
+                  </button>
+                  <button onclick="location.href='/api/devices'" class="action-btn">
+                      <i class="fas fa-list"></i>
+                      All Devices
+                  </button>
+              </div>
+          </div>
+          
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2024 IO-connecT. All rights reserved.</p>
+    </footer>
+</body>
+</html>
