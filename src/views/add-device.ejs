@@ -1,0 +1,43 @@
+<%- include('partials/header') %>
+<body>
+    <div class="dashboard-container" id="dashboard-flex-row" style="align-items: center;">
+        <div class="dashboard-grid">
+            <div class="dashboard-item add-device-form">
+                <h2><i class="fas fa-plus-circle"></i> Add New Device</h2>
+                <form action="/user/add-device" method="POST" class="">
+                    <div class="form-group">
+                        <label for="name">Device Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="serialnumber">Serial Number</label>
+                        <input type="text" id="serialnumber" name="serialnumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Device Type</label>
+                        <select id="type" name="type" required>
+                            <option value="">Select a device type</option>
+                            <option value="sensor">Sensor</option>
+                            <option value="actuator">Actuator</option>
+                            <option value="camera">Camera</option>
+                            <option value="hybrid">Hybrid</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="action-btn"><i class="fas fa-save"></i> Add Device</button>
+                        <a href="/user/dashboard" class="action-btn secondary"><i class="fas fa-times"></i> Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>

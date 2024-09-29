@@ -9,25 +9,24 @@ const DeviceSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    serialNumber: {
+    serialnumber: {
         type: String, // Also chipID
-        required: true,
-        index: true,
-        unique: true
+        // required: true,
+        // index: true,
+        // unique: true
     },
     location: {
         type: String,
         required: true,
-        unique: false
     },
     firmwareVersion: {
         type: String,
-        required: true
+        required: false
     },
     lastConnected: Date,
     status: {
         type: String,
-        required: true
+        required: false
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,

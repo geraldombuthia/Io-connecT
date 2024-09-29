@@ -37,12 +37,14 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
+    
 }
 
 .devices-overview .device-card {
     background-color: var(--background-color);
     border-radius: 8px;
     padding: 1rem;
+    
 }
 
 /* Notifications and Alerts */

@@ -1,23 +1,132 @@
 <%- include('partials/header') %>
+<style>
+  /* Device card styles */
+  .device-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
 
-<h1>Device Management</h1>
-<ul id="device-list">
-  <% devices.forEach(device => { %>
-    <li>
-      <h2><%= device.name %></h2>
-      <p>ID: <%= device.id %></p>
-      <p>Status: <%= device.status %></p>
-      <a href="/api/devices/<%= device.id %>">View Details</a>
-      <form action="/api/devices/<%= device.id %>?_method=DELETE" method="POST">
-        <button type="submit">Remove</button>
-      </form>
-    </li>
-  <% }); %>
-</ul>
+  .device-card h2 {
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+  }
 
-<form action="/api/devices" method="POST">
-  <input type="text" name="name" placeholder="Device Name" required>
-  <button type="submit">Add Device</button>
-</form>
+  /* Status styles */
+  .status {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .status-inactive {
+    background-color: #ffcccb;
+    color: #d63031;
+  }
+
+  /* Button container */
+  .device-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  /* Updated button styles to be more consistent */
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.action-btn-info {
+    background-color: #00cec9;
+    color: white;
+}
+
+.action-btn-danger {
+    background-color: #ff7675;
+    color: white;
+}
+
+.action-btn-add {
+    background-color: #00cec9;
+    color: white;
+}
+
+.action-btn i {
+    font-size: 1rem;
+    margin-right: 0.2rem;
+}
+
+/* New styles for Add Device container */
+.add-device-container {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+/* Updated responsive grid to include Add Device container */
+@media (min-width: 768px) {
+    .device-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+    
+    .add-device-container {
+        grid-column: 1 / -1;
+    }
+}
+</style>
+<div class="dashboard-container" id="dashboard-flex-row">
+  <div class="dashboard-item devices-overview">
+    <h1 class="text-2xl font-semibold mb-4 text-blue-600">Device Management</h1>
+
+    <div class="device-grid" styles="display: flex; flex-direction: row;">
+      <% devices.forEach(device => { %>
+      <div class="device-card" id="<%= device.id %>">
+        <h2 class="font-semibold"><%= device.name %></h2>
+        <!-- <p><strong>ID:</strong> <%= device.id %></p> -->
+        <p>
+          <strong>Status:</strong>
+          <span
+            class="status <%= device.status.toLowerCase() === 'online' ? 'status-online' : 'status-offline' %>"
+          >
+            <%= device.status %>
+          </span>
+        </p>
+        <div class="device-actions">
+          <a href="/user/devices/<%= device.id %>" class="action-btn action-btn-info">
+              <i class="fas fa-info-circle"></i> View Details
+          </a>
+          <a href="/user/devices/<%= device.id %>/remove" class="action-btn action-btn-danger">
+              <i class="fas fa-trash"></i> Remove
+          </a>
+      </div>
+      </div>
+      <% }); %>
+    </div>
+
+    <!-- Replaced the Add Device form with a link -->
+    <div class="add-device-container">
+      <a href="/user/add-device/" class="action-btn action-btn-add">
+        <i class="fas fa-plus"></i> Add Device
+      </a>
+    </div>
+  </div>
+</div>
 
 <%- include('partials/footer') %>

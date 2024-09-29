@@ -2,28 +2,34 @@ const Device = require("../models/Device");
 
 class DeviceController {
 
-    static async registeDevice(userId, deviceInfo) {
+    static async registerDevice(userId, deviceInfo) {
         try {
+            if (!deviceInfo.serialnumber) {
+                throw new Error('Serial number is required.');
+            }
             const newDevice = new Device({
-                userId,
+                user: userId,
                 name: deviceInfo.name,
                 type: deviceInfo.type,
+                serialnumber: deviceInfo.serialnumber,
                 location: deviceInfo.location,
                 status: 'inactive',
             });
+
+            console.log("New Device Object: ", newDevice);
             await newDevice.save();
             return newDevice;
         } catch (err) {
-            console.error('Error registering the device:', error);
-            throw error;
+            console.error('Error registering the device:', err);
+            throw err;
         }
     }
     static async getUserDevices(userId) {
         try {
-            return await Device.find({userId});
+            return await Device.find({user: userId});
         } catch (error) {
-            console.error("Erro fetching user devices: ", error);
-            throw error;
+            console.error("Error fetching user devices: ", error);
+            //throw error;
         }
     }
     static async getDevice(deviceId) {
@@ -32,7 +38,7 @@ class DeviceController {
 
         } catch (error) {
             console.log("Error fetching device: ", error);
-            throw error;
+            //throw error;
         }
     }
     static async updateDeviceStatus(deviceId, status) {
@@ -40,7 +46,7 @@ class DeviceController {
             return await Device.findByIdAndUpdate(deviceId, {status}, {new: true});
         } catch(error) {
             console.error("Error updating device status ", error);
-            throw error;
+            //throw error;
         }
     }
 
@@ -55,7 +61,7 @@ class DeviceController {
             await DeviceController.updateDeviceStatus(deviceId, 'active');
         } catch (error) {
             console.log("Error handlingSensorData");
-            throw error;
+            //throw error;
         }
     }
 }
