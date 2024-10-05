@@ -1,18 +1,20 @@
 const mongoose = require("mongoose");
 
-const sensorDataSchema = new mongoose.Schema({
+const sensorDataSchema = mongoose.Schema({
   deviceId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Device",
   },
-  timestamp: {
+  timeStamp: {
     type: Date,
     default: Date.now
   },
-  data: Schema.Types.mixed, // Flexible data
+  data: {
+    type: mongoose.Schema.Types.Mixed, // Flexible data
+  }
 
-}, {strict: false});
+}, { strict: false });
 
-const SensorData = mongoose.Schema('SensorData', sensorDataSchema);
+const SensorData = mongoose.model('SensorData', sensorDataSchema);
 
 module.exports = SensorData;

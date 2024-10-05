@@ -1,4 +1,5 @@
 const Device = require("../models/Device");
+const SensorData = require("../models/SensorData");
 
 class DeviceController {
 
@@ -6,6 +7,13 @@ class DeviceController {
         try {
             if (!deviceInfo.serialnumber) {
                 throw new Error('Serial number is required.');
+            }
+
+            const device = await DeviceController.getDevice(deviceInfo.serialnumber);
+
+            if (device.length > 0) {
+                console.log("This device already exists");
+                return;
             }
             const newDevice = new Device({
                 user: userId,
@@ -32,9 +40,11 @@ class DeviceController {
             //throw error;
         }
     }
-    static async getDevice(deviceId) {
+    static async getDevice(serialnumber) {
         try {
-            return await Device.find({userId});
+            const device = await Device.findOne({serialnumber});
+
+            return device;
 
         } catch (error) {
             console.log("Error fetching device: ", error);
@@ -55,12 +65,11 @@ class DeviceController {
             const storeData = new SensorData({
                 deviceId,
                 timeStamp: new Date(),
-                ...data
+                data
             })
-            await SensorData.save();
-            await DeviceController.updateDeviceStatus(deviceId, 'active');
+            return await storeData.save();
         } catch (error) {
-            console.log("Error handlingSensorData");
+            console.log("Error handlingSensorData", error);
             //throw error;
         }
     }

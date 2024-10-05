@@ -3,6 +3,7 @@ const User = require("../models/User");
 const passport = require("../config/passportAuth");
 const ensureAuthenticated = require("../middleware/auth");
 const DeviceController = require("../controllers/Device.controller");
+const Device = require("../models/Device");
 
 const router = express.Router();
 
@@ -64,12 +65,20 @@ router.get("/dashboard", ensureAuthenticated, async (req, res) => {
 router.get("/alerts", ensureAuthenticated, (req, res) => {
   res.render("alert.ejs");
 });
-router.get("/devices", async (req, res) => {
+router.get("/devices", ensureAuthenticated, async (req, res) => {
   const devices = await DeviceController.getUserDevices(req.user.id);
 
   res.render("devices.ejs", {devices});
 });
+router.get("/device/:id", async(req,res) => {
+  const {id}  = req.params;
+  const device = await DeviceController.getDevice(id);
 
+  console.log("Id param", id);
+  console.log("Device Data",device);
+
+  res.json({id, device});
+})
 router.get("/add-device", (req, res) => {
   console.log(req.headers);
 
@@ -103,7 +112,26 @@ router.post("/add-device", ensureAuthenticated, async (req, res) => {
   // res.render("device.ejs");
 });
 
-router.post("/post-data", (req, res) => {});
+router.get("/post-data", (req, res) => {
+  console.log("Get /post-data");
+
+  res.json({message: "Send data here"});
+})
+router.post("/post-data", async (req, res) => {
+  const {data} = req.body;
+  
+  const actualUser = await DeviceController.getDevice(req.body.chipid);
+
+  if (!actualUser) {
+    console.error("No device found with that Id");
+  }
+  const newData = await DeviceController.handleSensorData(actualUser.serialnumber, req.body);
+
+  console.log("New Data in device", newData);
+
+  res.status(200).json({message: "success"});
+
+});
 router.get("/logout", (req, res) => {
   req.logout();
   res.redirect("/");
