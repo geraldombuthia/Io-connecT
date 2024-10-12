@@ -74,10 +74,15 @@ router.get("/device/:id", async(req,res) => {
   const {id}  = req.params;
   const device = await DeviceController.getDevice(id);
 
-  console.log("Id param", id);
-  console.log("Device Data",device);
+  const latestData = await DeviceController.fetchDeviceData(device.serialnumber, -1, 1);
 
-  res.json({id, device});
+  const historicalData = await DeviceController.fetchDeviceData(device.serialnumber);
+  console.log("Id param", id);
+  console.log("Device Data",device, latestData);
+
+  // res.json({id, device, latestData});
+
+  res.render("view-device.ejs", {device, latestData, historicalData});
 })
 router.get("/add-device", (req, res) => {
   console.log(req.headers);

@@ -40,11 +40,16 @@ class DeviceController {
             //throw error;
         }
     }
-    static async getDevice(serialnumber) {
+    static async getDevice(id) {
         try {
-            const device = await Device.findOne({serialnumber});
+            const device = await Device.findOne({_id: id}).populate({path:"user", select: "-password"});
 
-            return device;
+            if (device) {
+                console.log("Device found: ", device);
+                return device;
+            } else {
+                console.log("Device not found");
+            }
 
         } catch (error) {
             console.log("Error fetching device: ", error);
@@ -70,6 +75,15 @@ class DeviceController {
             return await storeData.save();
         } catch (error) {
             console.log("Error handlingSensorData", error);
+            //throw error;
+        }
+    }
+
+    static async fetchDeviceData(deviceId, order = -1, limit = 1000) {
+        try {
+            return await SensorData.find({deviceId}).sort({timeStamp: order}).limit(limit);
+        } catch (error) {
+            console.log("Error fetching device data", error);
             //throw error;
         }
     }

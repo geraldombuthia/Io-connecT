@@ -1,0 +1,556 @@
+<%- include('partials/header') %>
+
+    <body>
+        <style>
+            body {
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                background-color: #f3f4f6;
+                line-height: 1.5;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            *,
+            *:before,
+            *:after {
+                box-sizing: inherit;
+            }
+
+            .container {
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.875rem;
+                font-weight: bold;
+                color: #1f2937;
+                margin-bottom: 1.5rem;
+            }
+
+            .card-grid {
+                display: grid;
+                gap: 1rem;
+                grid-template-columns: 1fr;
+            }
+
+            @media (min-width: 768px) {
+                .card-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+
+            .card {
+                background-color: white;
+                border-radius: 0.5rem;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                padding: 1rem;
+                height: 100%;
+            }
+
+            .card-full-width {
+                grid-column: 1 / -1;
+            }
+
+            h2 {
+                font-size: 1.25rem;
+                font-weight: 600;
+                color: #374151;
+                margin-bottom: 1rem;
+            }
+
+            .space-y-2>*+* {
+                margin-top: 0.5rem;
+            }
+
+            .info-item {
+                background-color: #f3f4f6;
+                border-radius: 0.5rem;
+                padding: 1rem;
+                text-align: center;
+            }
+
+            .info-item p:first-child {
+                font-size: 0.805rem;
+                color: #6b7280;
+                margin-bottom: 0.5rem;
+            }
+
+            .info-item p:last-child {
+                font-size: 1.0rem;
+                font-weight: 600;
+                color: #1f2937;
+                margin: 0;
+            }
+
+            .status-badge {
+                display: inline-block;
+                padding: 0.25rem 0.5rem;
+                border-radius: 9999px;
+                font-size: 0.875rem;
+                font-weight: 600;
+            }
+
+            .status-online {
+                background-color: #d1fae5;
+                color: #065f46;
+            }
+
+            .font-medium {
+                font-weight: 500;
+            }
+
+            .status-badge {
+                display: inline-block;
+                padding: 0.25rem 0.5rem;
+                border-radius: 9999px;
+                font-size: 0.875rem;
+                font-weight: 600;
+            }
+
+            .status-online {
+                background-color: #d1fae5;
+                color: #065f46;
+            }
+
+            .status-offline {
+                background-color: #fee2e2;
+                color: #991b1b;
+            }
+
+            .italic {
+                font-style: italic;
+            }
+
+            .data-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+
+            @media (min-width: 640px) {
+                .data-grid {
+                    grid-template-columns: repeat(4, 1fr);
+                }
+            }
+
+            .data-card {
+                padding: 0.5rem;
+                border-radius: 0.5rem;
+                word-break: break-word;
+            }
+
+            .data-card p:first-child {
+                font-size: 0.805rem;
+                font-weight: 500;
+                margin-bottom: 0.25rem;
+            }
+
+            .data-card p:last-child {
+                font-size: 1.0rem;
+                font-weight: bold;
+                margin: 0;
+            }
+
+            .bg-blue {
+                background-color: #eff6ff;
+            }
+
+            .text-blue {
+                color: #1e40af;
+            }
+
+            .bg-green {
+                background-color: #ecfdf5;
+            }
+
+            .text-green {
+                color: #065f46;
+            }
+
+            .bg-purple {
+                background-color: #f5f3ff;
+            }
+
+            .text-purple {
+                color: #5b21b6;
+            }
+
+            .bg-yellow {
+                background-color: #fffbeb;
+            }
+
+            .text-yellow {
+                color: #92400e;
+            }
+
+            .table-container {
+                overflow-x: auto;
+                max-width: 100%;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 0.875rem;
+            }
+
+            th,
+            td {
+                padding: 0.5rem;
+                text-align: left;
+                white-space: nowrap;
+            }
+
+            thead {
+                background-color: #f3f4f6;
+            }
+
+            tbody tr:nth-child(even) {
+                background-color: #f9fafb;
+            }
+
+            .back-button {
+                display: inline-block;
+                margin-top: 1rem;
+                padding: 0.75rem 1.5rem;
+                background-color: #2563eb;
+                color: white;
+                font-weight: 600;
+                border-radius: 0.5rem;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+            }
+
+            .back-button:hover {
+                background-color: #1d4ed8;
+            }
+
+            footer {
+                background-color: #1f2937;
+                color: white;
+                text-align: center;
+                padding: 1rem;
+                margin-top: 2rem;
+            }
+            .graph-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            
+        }
+
+        #historicalDataGraph {
+            width: 100%;
+            height: 400px;
+            overflow-x: auto;
+            border: 1px solid #ccc;
+        }
+        svg {
+            height: 400px; /* Fixed height for the SVG */
+        }
+        .legend {
+            font-size: 12px;
+            cursor: pointer;
+        }
+        </style>
+        <div class="container">
+            <h1>Device Details</h1>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h2>Device Information</h2>
+                    <div class="space-y-2">
+                        <div class="info-item">
+                            <p>Name</p>
+                            <p>
+                                <%= device.name %>
+                            </p>
+                        </div>
+                        <div class="info-item">
+                            <p>Type</p>
+                            <p>
+                                <%= device.type %>
+                            </p>
+                        </div>
+                        <div class="info-item">
+                            <p>Serial Number</p>
+                            <p>
+                                <%= device.serialnumber %>
+                            </p>
+                        </div>
+                        <div class="info-item">
+                            <p>Location</p>
+                            <p>
+                                <%= device.location %>
+                            </p>
+                        </div>
+                        <div class="info-item">
+                            <p>Status</p>
+                            <p
+                                class="status-badge <%= device.status === 'active' ? 'status-online' : 'status-offline' %>">
+                                <%= device.status==='active' ? 'Online' : 'Offline' %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>User Information</h2>
+                    <div class="space-y-2">
+                        <% if (device.user) { %>
+                            <div class="info-item">
+                                <p>User ID</p>
+                                <p>
+                                    <%= device.user._id %>
+                                </p>
+                            </div>
+                            <div class="info-item">
+                                <p>Username</p>
+                                <p>
+                                    <%= device.user.username %>
+                                </p>
+                            </div>
+
+                            <div class="info-item">
+                                <p>Email</p>
+                                <p>
+                                    <%= device.user.email %>
+                                </p>
+                            </div>
+                            <div class="info-item">
+                                <p>User ID</p>
+                                <p>
+                                    <%= device.user._id %>
+                                </p>
+                            </div>
+                            <div class="info-item">
+                                <p>Created At</p>
+                                <p>
+                                    <%= device.user.createdAt.toLocaleString() %>
+                                </p>
+                            </div>
+                    </div>
+                    <!-- Add more user details here if available -->
+                    <% } else { %>
+                        <p class="italic">No user associated with this device.</p>
+                        <% } %>
+                </div>
+
+                <div class="card card-full-width">
+                    <h2>Latest Device Data</h2>
+                    <% if (latestData && latestData.length> 0) { %>
+                        <% const latest=latestData[0]; %>
+                            <div class="data-grid">
+                                <div class="data-card bg-blue">
+                                    <p class="text-blue">Temperature</p>
+                                    <p class="text-blue">
+                                        <%= latest.data.temp || 'N/A' %> °C
+                                    </p>
+                                </div>
+                                <div class="data-card bg-green">
+                                    <p class="text-green">Humidity</p>
+                                    <p class="text-green">
+                                        <%= latest.data.hum || 'N/A' %> %
+                                    </p>
+                                </div>
+                                <div class="data-card bg-purple">
+                                    <p class="text-purple">Chip ID</p>
+                                    <p class="text-purple">
+                                        <%= latest.data.chipid || 'N/A' %>
+                                    </p>
+                                </div>
+                                <div class="data-card bg-yellow">
+                                    <p class="text-yellow">Last Updated</p>
+                                    <p class="text-yellow">
+                                        <%= new Date(latest.timeStamp).toLocaleString() %>
+                                    </p>
+                                </div>
+                            </div>
+                            <% } else { %>
+                                <p class="italic">No data available for this device.</p>
+                                <% } %>
+                </div>
+
+                <div class="card card-full-width">
+                    <h2>Historical Data</h2>
+                    <% if (historicalData && historicalData.length> 0) { %>
+                        <div class="graph-card">
+                            <div id="historicalDataGraph"></div>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Timestamp</th>
+                                        <th>Temp (°C)</th>
+                                        <th>Hum (%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% historicalData.forEach(function(dataPoint) { %>
+                                        <tr>
+                                            <td>
+                                                <%= new Date(dataPoint.timeStamp).toLocaleString() %>
+                                            </td>
+                                            <td>
+                                                <%= dataPoint.data.temp %>
+                                            </td>
+                                            <td>
+                                                <%= dataPoint.data.hum %>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <% } else { %>
+                            <p class="italic">No historical data available for this device.</p>
+                            <% } %>
+                </div>
+            </div>
+
+            <a href="/devices" class="back-button">Back to Devices</a>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 IoConnect. All rights reserved.</p>
+        </footer>
+        <script defer type="text/javascript">
+            // import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+            let data_err = <%- JSON.stringify(historicalData) %>;
+            console.table(data_err);
+            // if (historicalData && historicalData.length> 0) {
+            //     let data_arr = [...historicalData];
+            // }
+            const parsedData = data_err.map(d => {
+                return {
+                    date: new Date(Number(d.data.timestamp)),
+                    hum: Number(d.data.hum),
+                    temp: Number(d.data.temp)
+                }
+            });
+
+            console.log(parsedData)
+
+            const graph = document.getElementById("historicalDataGraph");
+            let width = graph.offsetWidth;
+            let height = graph.offsetHeight;
+            const marginTop = 10;
+            const marginRight = 10;
+            const marginBottom = 40;
+            const marginLeft = 40;
+
+            // const handleResize = () => {
+            //     width = graph.offsetWidth;
+            //     height = graph.offsetHeight;
+            // }
+
+            // Declare the x (horizontal position scale)
+
+            const x = d3.scaleTime()
+                        .domain(d3.extent(parsedData, d => d.date))
+                        .range([marginLeft, width - marginRight]);
+
+            // Declare the y (vertical position) scale.
+
+            const y = d3.scaleLinear()
+                        .domain([0, d3.max(parsedData, d => d.hum + 20)])
+                        .range([height - marginBottom, marginTop]);
+            const line = d3.line()
+                        .x(d => x(d.date))
+                        .y(d => y(d.hum));
+            
+            const line1 = d3.line()
+                            .x(d => x(d.date))
+                            .y(d => y(d.temp));
+            // Create the SVG container
+            const svg = d3.create("svg")
+                        .attr("width", width)
+                        .attr("height", height)
+                        .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+            
+
+
+            const xAxis = d3.axisBottom(x)
+                        .ticks(d3.timeMonth.every(1)) // Set ticks to one month interval
+                        .tickFormat(d => {
+                            const month = d.toLocaleString('default', { month: 'short' }); // Get abbreviated month name (e.g., "Jan", "Feb")
+                            return month.length === 4 ? month : month.substring(0, 3); // Ensure it is 3 or 4 letters
+                         });
+
+            svg.append("path")
+                .datum(parsedData)
+                .attr("fill", "none")
+                .attr("stroke", "steelblue")
+                .attr("stroke-width", 1.5)
+                .attr("d", line);
+            svg.append("path")
+                .datum(parsedData)
+                .attr("fill", "none")
+                .attr("stroke", "orange")
+                .attr("stroke-width", 1.5)
+                .attr("d", line1);
+            // Add the x-axis
+            svg.append("g")
+                .attr("transform", `translate(0, ${height - marginBottom})`)
+                .call(xAxis);
+
+            // Add the y-axis
+            svg.append("g")
+                .attr("transform", `translate(${marginLeft}, 0)`)
+                .call(d3.axisLeft(y));
+
+            // Add a title to the graph
+            svg.append("text")
+               .attr("x", width/2)
+               .attr("y", marginTop + 20)
+               .attr("text-anchor", "middle")
+               .attr("font-size", "16px")
+               .attr("fill", "black")
+               .text("Temperature and Humidity over time");
+
+            // Create a legend
+            const legendGroup = svg.append("g")
+                                .attr("transform", `translate(${width - 120}, ${marginTop})`)
+
+            // Legend for Temperature
+            legendGroup.append("rect")
+                        .attr("width", 15)
+                        .attr("height", 15)
+                        .attr("fill", "steelblue");
+            
+            legendGroup.append("text")
+                        .attr("x", 20)
+                        .attr("y", 12)
+                        .text("Temperature(*C)")
+                        .attr("font-size", "12px")
+                        .attr("class", "legend")
+
+            // Legend for Humidity
+            legendGroup.append("rect")
+                         .attr("y", 20)
+                         .attr("width", 15)
+                         .attr("height", 15)
+                         .attr("fill", "orange")
+
+            legendGroup.append("text")
+                        .attr("x", 20)
+                        .attr("y", 32)
+                        .text("Humidity (%)")
+                        .attr("font-size", "12px")
+                        .attr("class", "legend");
+            
+            graph.append(svg.node());
+
+            // window.addEventListener('resize', handleResize);
+
+        </script>
+    </body>
+
+    </html>

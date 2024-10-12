@@ -12,7 +12,7 @@ const DeviceSchema = new mongoose.Schema({
     serialnumber: {
         type: String, // Also chipID
         // required: true,
-        // index: true,
+        index: true,
         // unique: true
     },
     location: {

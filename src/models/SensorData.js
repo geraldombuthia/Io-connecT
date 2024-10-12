@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 
 const sensorDataSchema = mongoose.Schema({
+
   deviceId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: "Device",
   },
   timeStamp: {
