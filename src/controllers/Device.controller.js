@@ -79,7 +79,7 @@ class DeviceController {
         }
     }
 
-    static async fetchDeviceData(deviceId, order = -1, limit = 1000) {
+    static async fetchDeviceData(deviceId, order = -1, limit = 10000) {
         try {
             return await SensorData.find({deviceId}).sort({timeStamp: order}).limit(limit);
         } catch (error) {

@@ -52,7 +52,16 @@ router
 
 router.get("/profile", ensureAuthenticated, (req, res) => {
   // res.send("Dashboard");
-  res.render("profile.ejs");
+  res.render("profile.ejs", { user: req.user });
+});
+
+router.post("/profile", ensureAuthenticated, async (req, res) => { 
+
+  const {firstname, lastname, email, username} = req.body;
+
+  console.log("Profile Update", req.body);
+
+  res.render("profile.ejs", { user: req.user });
 });
 
 router.get("/dashboard", ensureAuthenticated, async (req, res) => {
@@ -63,7 +72,7 @@ router.get("/dashboard", ensureAuthenticated, async (req, res) => {
 });
 
 router.get("/alerts", ensureAuthenticated, (req, res) => {
-  res.render("alert.ejs");
+  res.render("alerts.ejs");
 });
 router.get("/devices", ensureAuthenticated, async (req, res) => {
   const devices = await DeviceController.getUserDevices(req.user.id);

@@ -381,6 +381,7 @@
                     <h2>Historical Data</h2>
                     <% if (historicalData && historicalData.length> 0) { %>
                         <div class="graph-card">
+                            <h2>Temperature and Humidity over time</h2>
                             <div id="historicalDataGraph"></div>
                         </div>
                         <div class="table-container">
@@ -451,8 +452,20 @@
             //     height = graph.offsetHeight;
             // }
 
-            // Declare the x (horizontal position scale)
+            // Declare t he x (horizontal position scale)
 
+                    // Function to determine appropriate time format
+        // const getTimeFormat = (data) => {
+        //     if (data.length < 2) return d3.timeFormat("%Y-%m-%d %H:%M");
+            
+        //     const timeDiff = data[data.length - 1].date - data[0].date;
+        //     const daysDiff = timeDiff / (1000 * 60 * 60 * 24);
+
+        //     if (daysDiff > 365) return d3.timeFormat("%Y");
+        //     if (daysDiff > 30) return d3.timeFormat("%b %Y");
+        //     if (daysDiff > 1) return d3.timeFormat("%b %d");
+        //     return d3.timeFormat("%H:%M");
+        // };
             const x = d3.scaleTime()
                         .domain(d3.extent(parsedData, d => d.date))
                         .range([marginLeft, width - marginRight]);
@@ -478,7 +491,7 @@
 
 
             const xAxis = d3.axisBottom(x)
-                        .ticks(d3.timeMonth.every(1)) // Set ticks to one month interval
+                        .ticks(d3.timeDay.every(1)) // Set ticks to one month interval
                         .tickFormat(d => {
                             const month = d.toLocaleString('default', { month: 'short' }); // Get abbreviated month name (e.g., "Jan", "Feb")
                             return month.length === 4 ? month : month.substring(0, 3); // Ensure it is 3 or 4 letters
@@ -507,13 +520,13 @@
                 .call(d3.axisLeft(y));
 
             // Add a title to the graph
-            svg.append("text")
-               .attr("x", width/2)
-               .attr("y", marginTop + 20)
-               .attr("text-anchor", "middle")
-               .attr("font-size", "16px")
-               .attr("fill", "black")
-               .text("Temperature and Humidity over time");
+            // svg.append("text")
+            //    .attr("x", width/2)
+            //    .attr("y", marginTop + 20)
+            //    .attr("text-anchor", "middle")
+            //    .attr("font-size", "16px")
+            //    .attr("fill", "black")
+            //    .text("Temperature and Humidity over time");
 
             // Create a legend
             const legendGroup = svg.append("g")
