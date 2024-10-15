@@ -1,4 +1,24 @@
 //@TODO Convert to a class to allow variable functionality
+
+let AlertSeverity = Object.freeze({
+  critical: 'critical',
+  error: 'error',
+  warning: 'warning',
+  info: 'info'
+})
+
+let AlertType = Object.freeze({
+  notif: "notification",
+  command: "command",
+  webhook: "webhook",
+  log: "log",
+  push: "push_notification",
+  sms: "sms",
+  email: "email",
+  shutdown: "shutdown",
+  restart: "restart"
+})
+
 function socket() {
   const WebSocket = require("ws");
 
