@@ -42,7 +42,7 @@ class DeviceController {
     }
     static async getDevice(id) {
         try {
-            const device = await Device.findOne({_id: id}).populate({path:"user", select: "-password"});
+            const device = await Device.findOne({serialnumber: id}).populate({path:"user", select: "-password"});
 
             if (device) {
                 console.log("Device found: ", device);

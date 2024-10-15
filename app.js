@@ -9,12 +9,14 @@ const helmet = require('helmet');
 const connectDB = require("./src/config/database");
 const UserRoutes = require("./src/routes/UserRoutes");
 const passport = require("./src/config/passportAuth");
+const socket = require("./src/sockets/socketManager");
 const { xPoweredBy } = require('helmet');
 const app = express();
 
 const PORT = process.env.PORT || 3000;
 
 connectDB();
+socket();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));

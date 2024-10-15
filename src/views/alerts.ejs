@@ -1,6 +1,272 @@
 <%- include('partials/header') %>
 
-<h1>Alerts</h1>
+<body>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f3f4f6;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        h1 {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .card-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1rem;
+            height: 500px;
+            overflow: auto;
+        }
+
+        .card-full-width {
+            grid-column: 1 / -1;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 1rem;
+        }
+
+        .alert-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .alert-item {
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .alert-item.high {
+            background-color: #fee2e2;
+            border-left: 4px solid #dc2626;
+        }
+
+        .alert-item.medium {
+            background-color: #fef3c7;
+            border-left: 4px solid #d97706;
+        }
+
+        .alert-item.low {
+            background-color: #e0f2fe;
+            border-left: 4px solid #0284c7;
+        }
+
+        .alert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .alert-timestamp {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .alert-message {
+            color: #4b5563;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-resolved {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background-color: #2563eb;
+            color: white;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #1d4ed8;
+        }
+
+        footer {
+            background-color: #1f2937;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+    </style>
+    <div class="container">
+        <h1>Alerts Dashboard</h1>
+
+        <div class="card-grid">
+            <div class="card card-full-width">
+                <h2>Active Alerts</h2>
+                <ul class="alert-list" id="activeAlerts">
+                    <!-- Active alerts will be dynamically inserted here -->
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>Alert Statistics</h2>
+                <div id="alertStats">
+                    <!-- Alert statistics will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Recent Resolved Alerts</h2>
+                <ul class="alert-list" id="resolvedAlerts">
+                    <!-- Resolved alerts will be dynamically inserted here -->
+                </ul>
+            </div>
+        </div>
+
+        <a href="/dashboard" class="back-button">Back to Dashboard</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 IoConnect. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Simulated alert data (replace with actual data fetching)
+        const alerts = [
+            { id: 1, title: "High Temperature", message: "Device A1 reporting temperature above threshold", severity: "high", timestamp: new Date(2024, 9, 12, 10, 30), status: "active" },
+            { id: 2, title: "Low Humidity", message: "Device B2 reporting humidity below normal range", severity: "medium", timestamp: new Date(2024, 9, 12, 9, 15), status: "active" },
+            { id: 3, title: "Connection Lost", message: "Device C3 not responding", severity: "high", timestamp: new Date(2024, 9, 11, 23, 45), status: "active" },
+            { id: 4, title: "Battery Low", message: "Device D4 battery level critical", severity: "low", timestamp: new Date(2024, 9, 11, 18, 20), status: "resolved" },
+            { id: 5, title: "Sensor Malfunction", message: "Device E5 temperature sensor giving erratic readings", severity: "medium", timestamp: new Date(2024, 9, 11, 14, 10), status: "resolved" },
+        ];
+
+        function renderAlerts() {
+            const activeAlertsEl = document.getElementById('activeAlerts');
+            const resolvedAlertsEl = document.getElementById('resolvedAlerts');
+            const statsEl = document.getElementById('alertStats');
+
+            activeAlertsEl.innerHTML = '';
+            resolvedAlertsEl.innerHTML = '';
+
+            const activeAlerts = alerts.filter(alert => alert.status === 'active');
+            const resolvedAlerts = alerts.filter(alert => alert.status === 'resolved');
+
+            activeAlerts.forEach(alert => {
+                activeAlertsEl.innerHTML += `
+                    <li class="alert-item ${alert.severity}">
+                        <div class="alert-header">
+                            <span class="alert-title">${alert.title}</span>
+                            <span class="alert-timestamp">${alert.timestamp.toLocaleString()}</span>
+                        </div>
+                        <p class="alert-message">${alert.message}</p>
+                        <span class="status-badge status-active">Active</span>
+                    </li>
+                `;
+            });
+
+            resolvedAlerts.forEach(alert => {
+                resolvedAlertsEl.innerHTML += `
+                    <li class="alert-item ${alert.severity}">
+                        <div class="alert-header">
+                            <span class="alert-title">${alert.title}</span>
+                            <span class="alert-timestamp">${alert.timestamp.toLocaleString()}</span>
+                        </div>
+                        <p class="alert-message">${alert.message}</p>
+                        <span class="status-badge status-resolved">Resolved</span>
+                    </li>
+                `;
+            });
+
+            // Render alert statistics
+            const totalAlerts = alerts.length;
+            const activeCount = activeAlerts.length;
+            const resolvedCount = resolvedAlerts.length;
+
+            statsEl.innerHTML = `
+                <p>Total Alerts: ${totalAlerts}</p>
+                <p>Active Alerts: ${activeCount}</p>
+                <p>Resolved Alerts: ${resolvedCount}</p>
+            `;
+        }
+
+        // Initial render
+        renderAlerts();
+
+        // Simulating real-time updates (replace with WebSocket implementation for actual real-time data)
+        setInterval(() => {
+            // Simulating a new alert
+            if (Math.random() > 0.7) {
+                alerts.unshift({
+                    id: alerts.length + 1,
+                    title: "New Alert",
+                    message: "This is a simulated new alert",
+                    severity: ["low", "medium", "high"][Math.floor(Math.random() * 3)],
+                    timestamp: new Date(),
+                    status: "active"
+                });
+                renderAlerts();
+            }
+        }, 5000);
+    </script>
+</body>
+
+</html>
 
 
 <%- include('partials/footer') %>
