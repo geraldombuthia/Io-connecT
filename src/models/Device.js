@@ -34,6 +34,9 @@ const DeviceSchema = new mongoose.Schema({
     }
 });
 
+DeviceSchema.index({name: 1, serialnumber: 1, user: 1}, {unique: true});
+
+
 const Device = mongoose.model("Device", DeviceSchema);
 
 module.exports = Device;
