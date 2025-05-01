@@ -10,8 +10,8 @@ class DeviceController {
             }
 
             const device = await DeviceController.getDevice(deviceInfo.serialnumber);
-
-            if (device.length > 0) {
+             console.log(device)   
+            if (device) {
                 console.log("This device already exists");
                 return;
             }
